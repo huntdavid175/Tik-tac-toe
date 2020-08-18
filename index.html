@@ -16,13 +16,13 @@
     <title>Tik Tac Toe</title>
   </head>
   <body>
-
-    <!-- <h1 class="page-header">Please Choose Your Opponent</h1>
+<div class="wrapper first-wrapper">
+    <h1 class="page-header">Please Choose Your Opponent</h1>
     <div class="container-fluid my-auto">
-      <div class="row justify-content-center"> -->
+      <div class="row justify-content-center"> 
         <!-- Cards Here   -->
-         <!-- <div class="col-md-4">
-          <div class="card custom">
+          <div class="col-md-4">
+          <div class="card custom" id="AI">
             <div class="card-body hover-card-effect">
               <h1 class="card-title text-center">AI</h5>
               <p class="card-text text-center">Play Against Unbeatable AI</p>
@@ -31,7 +31,7 @@
         </div>
 
         <div class="col-md-4">
-          <div class="card">
+          <div class="card" id="friend">
             <div class="card-body hover-card-effect">
               <h1 class="card-title text-center">Friend</h1>
               <p class="card-text text-center">Play Against your friend, in a friendly game</p>
@@ -39,11 +39,13 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
+  </div>
 
 
     <!-- Input Users names  -->
-    <!-- <div class="row page-header">
+    <div class="wrapper second-wrapper no-display">
+    <div class="row page-header">
       <div class="col-md-12">
         <h1>Please Input Player Names</h1>
       </div>
@@ -74,9 +76,13 @@
       <div class="col-md-12">
         <button type="button" class="btn btn-primary">Play Game</button>
       </div>
-    </div> -->
+    </div>
+  </div>
+
+
 
     <!-- Game board  -->
+    <div class="wrapper game-wrapper no-display">
     <div class="row" style="margin-top: 25px; margin-bottom: 45px;">
       <div class="col-md-12 d-flex justify-content-around">
         <div>
@@ -90,7 +96,6 @@
           </div>
       </div>
     </div> 
-
 
     <div class="container-fluid">
       <div class="row justify-content-center">
@@ -118,6 +123,7 @@
         <button type="button" class="btn btn-primary">Play Again</button>
       </div>
     </div>
+  </div>
 
 
 

@@ -16,6 +16,12 @@
     background-color: #000 !important;
     color: #fff !important;
   }
+
+  .wrapper {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+  }
   
   .page-header {
     align-self: center;
@@ -27,6 +33,14 @@
       align-self: center;
       position: absolute;
       top: 72%;
+  }
+
+  .no-display {
+      display: none;
+  }
+
+  .show {
+      display: flex;
   }
   
   .card {
