@@ -2,5 +2,54 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+  }
+  body {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+  
+  .page-header {
+    align-self: center;
+    position: absolute;
+    padding-top: 15%;
+  }
+  
+  .button-container {
+      align-self: center;
+      position: absolute;
+      top: 72%;
+  }
+  
+  .card {
+      margin-top: 15px;
+  }
+  
+  .card-body {
+      background-color: #000;
+  }
+  
+  .hover-card-effect:hover {
+      color: #000;
+      background-color: #fff;
+      cursor: pointer;
+  }
+  
+  h1 {
+      text-shadow: 0 0 10px yellow,
+      0 0 20px yellow,
+      0 0 30px yellow,
+      0 0 40px yellow,
+      0 0 50px yellow,
+      0 0 60px yellow,
+      0 0 70px yellow
+  }
+  
