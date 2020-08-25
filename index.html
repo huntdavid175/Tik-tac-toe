@@ -25,7 +25,7 @@
           <div class="card custom" id="AI">
             <div class="card-body hover-card-effect">
               <h1 class="card-title text-center">AI</h5>
-              <p class="card-text text-center">Play Against Unbeatable AI</p>
+              <p class="card-text text-center">Play against Unbeatable AI</p>
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <div class="card" id="friend">
             <div class="card-body hover-card-effect">
               <h1 class="card-title text-center">Friend</h1>
-              <p class="card-text text-center">Play Against your friend, in a friendly game</p>
+              <p class="card-text text-center">Play against your friend, in a friendly game</p>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
           <div class="card">
             <div class="card-body">
               <h1 class="card-title">Player <span style="color:brown">X</span></h1>
-              <input class="form-control" type="text">
+              <input class="form-control" type="text" id='x'>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@
           <div class="card">
             <div class="card-body">
               <h1 class="card-title">Player <span style="color:blue">O</span></h1>
-              <input class="form-control" type="text">
+              <input class="form-control" type="text" id="o">
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@
 
     <div class="row button-container">
       <div class="col-md-12">
-        <button type="button" class="btn btn-primary">Play Game</button>
+        <button type="button" class="btn btn-primary" id="playBtn">Play Game</button>
       </div>
     </div>
   </div>
@@ -101,19 +101,19 @@
       <div class="row justify-content-center">
         <div class="col-md-12"></div>
         <div class="box-row">
-          <div class="box left-box top-box"> <h1 class="card-title"> <span style="color:brown">X</span></h1></div>
-          <div class="box top-box"></div>
-          <div class="box right-box top-box"></div>
+          <div data-key="0" class="box left-box top-box"></div>
+          <div data-key="1" class="box top-box"></div>
+          <div data-key="2" class="box right-box top-box"></div>
         </div>
         <div class="box-row">
-          <div class="box left-box"></div>
-          <div class="box"></div>
-          <div class="box right-box"></div>
+          <div data-key="3" class="box left-box"></div>
+          <div data-key="4" class="box"></div>
+          <div data-key="5" class="box right-box"></div>
         </div>
         <div class="box-row">
-          <div class="box left-box bottom-box"></div>
-          <div class="box bottom-box"><h1 class="card-title"> <span style="color:blue">O</span></h1></div>
-          <div class="box right-box bottom-box"></div>
+          <div data-key="6" class="box left-box bottom-box"></div>
+          <div data-key="7" class="box bottom-box"></div>
+          <div data-key="8" class="box right-box bottom-box"></div>
         </div>
       </div>
     </div>
