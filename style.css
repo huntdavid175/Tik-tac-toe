@@ -111,7 +111,15 @@ body {
   color: #fff;
 }
 
-.player-score:hover {
+.player-group:hover {
   text-decoration: none;
   color: #fff;
+}
+
+.brown-color {
+    color: brown;
+}
+
+.blue-color {
+    color: blue;
 }

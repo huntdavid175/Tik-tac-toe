@@ -1,4 +1,51 @@
 let logicController = (function () {
+      // function to determine winner 
+  let getWinner = function() {
+    let zero = gameArray[0];
+    let one = gameArray[1];
+    let two = gameArray[2];
+    let three = gameArray[3];
+    let four = gameArray[4];
+    let five = gameArray[5];
+    let six = gameArray[6];
+    let seven = gameArray[7];
+    let eight = gameArray[08];
+
+    let winningCombos = [[zero,one,two],[three,four,five],[six,seven,eight],[zero,three,six],[one,four,seven],[two,five,eight],[zero,four,eight],[two,four,six]];
+    let deciderArray = [];
+    winningCombos.forEach(function(combo){
+        // Check if an array has the same symbols 
+       let decider = combo.every(function(item){
+           return item == combo[0]
+       });
+       deciderArray.push(decider)
+    })
+
+    // Check to see if there is a winner in the array ie. true 
+    let winnerDecider = deciderArray.some(function(item) {
+        return item == true
+    })
+
+    // Get index of the occurence of true 
+    let indexOfWinner = deciderArray.indexOf(true);
+    let winningSymbol;
+
+    // Get Symbol that won 
+    if(winnerDecider){
+        winningSymbol = winningCombos[indexOfWinner][0];
+    }
+    
+
+    
+    console.log(deciderArray)
+    console.log(winningCombos)
+    console.log(winningSymbol);
+    
+    
+    return winningSymbol
+}
+
+    
   let gameArray = ["", "", "", "", "", "", "", "", ""];
 
   const Player = function (playerName, playerID) {
@@ -20,6 +67,7 @@ let logicController = (function () {
   return {
     gameArray,
     Player,
+    getWinner,
   };
 })();
 
@@ -99,6 +147,12 @@ let gameController = (function (UICtrl, logicCtrl) {
   // Function to add symbols to boxes
   let display = function () {
     boxes.forEach(function (box, index) {
+        if(logicCtrl.gameArray[index] == 'x') {
+            box.classList.add('brown-color')
+        }
+        else if (logicCtrl.gameArray[index] == 'o') {
+            box.classList.add('blue-color')
+        }
       box.innerHTML = ` ${logicCtrl.gameArray[index]} `;
     });
   };
@@ -112,6 +166,7 @@ let gameController = (function (UICtrl, logicCtrl) {
         let id = e.target.dataset.key;
         playersArray[gameState].addSymbol(id);
         display();
+        declareWinner()
         if (gameState == 0) {
           gameState = 1;
         } else if (gameState == 1) {
@@ -134,6 +189,28 @@ let gameController = (function (UICtrl, logicCtrl) {
     UICtrl.UIDomElements.playerScore[0].textContent = playerOneScore;
     UICtrl.UIDomElements.playerScore[1].textContent = playerTwoScore;
   };
+
+  let declareWinner = function() {
+    let gameWinner = logicCtrl.getWinner()
+    if (gameWinner != undefined) {
+        if (gameWinner == 'x'){
+            console.log(`${playersArray[0].playerName} is the Winner`)
+            updateScore(playersArray[0])
+        }
+        else if (gameWinner == 'o') {
+            console.log(`${playersArray[1].playerName} is the Winner`)
+            updateScore(playersArray[1])
+        }
+      }
+    }
+
+//   function to update score 
+
+function updateScore(player) {
+player.score += 1;
+setPlayerInfo(playersArray)
+}
+
 
   return {
     playersArray,
