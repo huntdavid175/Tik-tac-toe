@@ -3,6 +3,8 @@ let logicController = (function() {
 
     const Player = function(playerName, playerID){
         let score = 0;
+        
+        // function to add symbol to gameArray 
         let addSymbol = function(id) {
             gameArray.splice(id,1, playerID)
         }
@@ -89,21 +91,15 @@ let gameController = (function(UICtrl,logicCtrl) {
     })
 
     // function to add symbols to boxes 
-
     let display = function() {
-        for (let i = 0; i < logicCtrl.gameArray.length; i++) {
-            boxes[i].innerHTML = `<h1> ${logicCtrl.gameArray[i]} </h1>`
-        }
-    }
-
-
-
-
-
-
+        boxes.forEach(function(box,index) {
+            box.innerHTML = `<h1> ${logicCtrl.gameArray[index]} </h1>`
+        })
+    };
 
 return {
-    playersArray,display
+    playersArray,
+    display
 }
 
 })(UIController,logicController);
