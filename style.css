@@ -1,63 +1,63 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-  }
-  body {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-    background-color: #000 !important;
-    color: #fff !important;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+body {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  background-color: #000 !important;
+  color: #fff !important;
+}
 
-  .wrapper {
-    display: flex;
-    height: 100vh;
-    flex-direction: column;
-  }
-  
-  .page-header {
-    align-self: center;
-    position: absolute;
-    padding-top: 15%;
-  }
-  
-  .button-container {
-      align-self: center;
-      position: absolute;
-      top: 72%;
-  }
+.wrapper {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+}
 
-  .no-display {
-      display: none;
-  }
+.page-header {
+  align-self: center;
+  position: absolute;
+  padding-top: 15%;
+}
 
-  .show {
-      display: flex;
-  }
-  
-  .card {
-      margin-top: 15px;
-  }
-  
-  .card-body {
-      background-color: #000;
-  }
-  
-  .hover-card-effect:hover {
-      color: #000;
-      background-color: #fff;
-      cursor: pointer;
-  }
-  
-  /* h1 {
+.button-container {
+  align-self: center;
+  position: absolute;
+  top: 72%;
+}
+
+.no-display {
+  display: none;
+}
+
+.show {
+  display: flex;
+}
+
+.card {
+  margin-top: 15px;
+}
+
+.card-body {
+  background-color: #000;
+}
+
+.hover-card-effect:hover {
+  color: #000;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* h1 {
       text-shadow: 0 0 10px yellow,
       0 0 20px yellow,
       0 0 30px yellow,
@@ -67,52 +67,51 @@
       0 0 70px yellow
   } */
 
-  
-  .box-row {
-      width: 80%;
-      display: flex;
-  }
+.box-row {
+  width: 80%;
+  display: flex;
+}
 
-  .box {
-      width: 33%;
-      height: 200px;
-      border: 1px solid #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
+.box {
+  width: 33%;
+  height: 200px;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
 
-  .left-box {
-      border-left: none;
-  }
+.left-box {
+  border-left: none;
+}
 
-  .right-box {
-    border-right: none;
+.right-box {
+  border-right: none;
 }
 
 .top-box {
-    border-top: none;
+  border-top: none;
 }
 
 .bottom-box {
-    border-bottom: none;
+  border-bottom: none;
 }
 
-.player-score {
-    display: inline-block;
-    /* width: 100px;
+.player-group {
+  display: inline-block;
+  /* width: 100px;
     height: 40px; */
-    padding: 10px 20px;
-    text-align: center;
-    background-color: #000000;
-    border: 1px solid #fff;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #fff;
+  padding: 10px 20px;
+  text-align: center;
+  background-color: #000000;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #fff;
 }
 
 .player-score:hover {
-    text-decoration: none;
-    color: #fff;
+  text-decoration: none;
+  color: #fff;
 }
-  

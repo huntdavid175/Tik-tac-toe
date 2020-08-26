@@ -1,105 +1,142 @@
-let logicController = (function() {
-    let gameArray = ['x','','o','','x','','','',''];
+let logicController = (function () {
+  let gameArray = ["", "", "", "", "", "", "", "", ""];
 
-    const Player = function(playerName, playerID){
-        let score = 0;
-        
-        // function to add symbol to gameArray 
-        let addSymbol = function(id) {
-            gameArray.splice(id,1, playerID)
-        }
-        
-        return {
-            playerName,
-            playerID,
-            score,
-            addSymbol
-        }
-    }
+  const Player = function (playerName, playerID) {
+    let score = 0;
+
+    // function to add symbol to gameArray
+    let addSymbol = function (id) {
+      gameArray.splice(id, 1, playerID);
+    };
 
     return {
-        gameArray,
-        Player,
-    }
-})();
+      playerName,
+      playerID,
+      score,
+      addSymbol,
+    };
+  };
 
+  return {
+    gameArray,
+    Player,
+  };
+})();
 
 let UIController = (function () {
-    // Names of dom element attributes 
-    const domLabels = {
-        cardsLabel: 'card',
-        firstWrapperLabel: 'first-wrapper',
-        secondWrapperLabel: 'second-wrapper',
-        gameWrapperLabel: 'game-wrapper',
-        inputsLabel: 'form-control',
-        playBtnLabel: 'playBtn',
-        boxLabel: 'box'
-    };
+  // Names of dom element attributes
+  const domLabels = {
+    cardsLabel: "card",
+    firstWrapperLabel: "first-wrapper",
+    secondWrapperLabel: "second-wrapper",
+    gameWrapperLabel: "game-wrapper",
+    inputsLabel: "form-control",
+    playBtnLabel: "playBtn",
+    boxLabel: "box",
+    playerNameLabel: "player-name",
+    playerScoreLabel: "player-score",
+  };
 
-    // Getting html elements 
-    const domElements = {
-        cards: document.querySelectorAll(`.${domLabels.cardsLabel}`),
-        firstWrapper: document.querySelector(`.${domLabels.firstWrapperLabel}`),
-        secondWrapper: document.querySelector(`.${domLabels.secondWrapperLabel}`),
-        gameWrapper: document.querySelector(`.${domLabels.gameWrapperLabel}`),
-        inputs: document.querySelectorAll(`.${domLabels.inputsLabel}`),
-        playBtn: document.querySelector(`#${domLabels.playBtnLabel}`),
-        boxes: document.querySelectorAll(`.${domLabels.boxLabel}`),
-    };
+  // Getting html elements
+  const domElements = {
+    cards: document.querySelectorAll(`.${domLabels.cardsLabel}`),
+    firstWrapper: document.querySelector(`.${domLabels.firstWrapperLabel}`),
+    secondWrapper: document.querySelector(`.${domLabels.secondWrapperLabel}`),
+    gameWrapper: document.querySelector(`.${domLabels.gameWrapperLabel}`),
+    inputs: document.querySelectorAll(`.${domLabels.inputsLabel}`),
+    playBtn: document.querySelector(`#${domLabels.playBtnLabel}`),
+    boxes: document.querySelectorAll(`.${domLabels.boxLabel}`),
+    playerNames: document.querySelectorAll(`.${domLabels.playerNameLabel}`),
+    playerScore: document.querySelectorAll(`.${domLabels.playerScoreLabel}`),
+  };
 
-
-    return {
-        UIDomElements: domElements,
-        UIDomLabels: domLabels,
-    }
+  return {
+    UIDomElements: domElements,
+    UIDomLabels: domLabels,
+  };
 })();
 
+let gameController = (function (UICtrl, logicCtrl) {
+  let gameState = 0;
+  const playersArray = [];
+  let boxes = UICtrl.UIDomElements.boxes;
 
-let gameController = (function(UICtrl,logicCtrl) {
-    const playersArray = [];
-    let boxes = UICtrl.UIDomElements.boxes
-    
-      // Adding event listeners to cards to choose game mode and navigate to next step 
-      UICtrl.UIDomElements.cards.forEach(function(card) {
-        card.addEventListener('click', function() {
-            if (card.id == 'AI') {
-                UICtrl.UIDomElements.firstWrapper.classList.add('no-display');
-                UICtrl.UIDomElements.gameWrapper.classList.remove('no-display');
-                UICtrl.UIDomElements.gameWrapper.classList.add('show');
-            }
-            else if (card.id == "friend") {
-                UICtrl.UIDomElements.firstWrapper.classList.add('no-display');
-                UICtrl.UIDomElements.secondWrapper.classList.remove('no-display');
-                UICtrl.UIDomElements.secondWrapper.classList.add('show');
-            }
-        });
+  // Adding event listeners to cards to choose game mode and navigate to next step
+  UICtrl.UIDomElements.cards.forEach(function (card) {
+    card.addEventListener("click", function () {
+      if (card.id == "AI") {
+        UICtrl.UIDomElements.firstWrapper.classList.add("no-display");
+        UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
+        UICtrl.UIDomElements.gameWrapper.classList.add("show");
+      } else if (card.id == "friend") {
+        UICtrl.UIDomElements.firstWrapper.classList.add("no-display");
+        UICtrl.UIDomElements.secondWrapper.classList.remove("no-display");
+        UICtrl.UIDomElements.secondWrapper.classList.add("show");
+      }
     });
+  });
 
-    // Play game button functionality
-    UICtrl.UIDomElements.playBtn.addEventListener('click', function() {
-        
-        UICtrl.UIDomElements.inputs.forEach(function(input) {
-            player = logicCtrl.Player(input.value, input.id, UICtrl.UIDomElements.boxes);
-            playersArray.push(player)
-            console.log(player)
-        });
-        UICtrl.UIDomElements.secondWrapper.classList.remove('show');
-        UICtrl.UIDomElements.secondWrapper.classList.add('no-display');
-        UICtrl.UIDomElements.gameWrapper.classList.remove('no-display');
-        UICtrl.UIDomElements.gameWrapper.classList.add('show');
-        console.log(playersArray);
-    })
+  // Play game button functionality
+  UICtrl.UIDomElements.playBtn.addEventListener("click", function () {
+    UICtrl.UIDomElements.inputs.forEach(function (input) {
+      player = logicCtrl.Player(
+        input.value,
+        input.id,
+        UICtrl.UIDomElements.boxes
+      );
+      playersArray.push(player);
+      console.log(player);
+    });
+    UICtrl.UIDomElements.secondWrapper.classList.remove("show");
+    UICtrl.UIDomElements.secondWrapper.classList.add("no-display");
+    UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
+    UICtrl.UIDomElements.gameWrapper.classList.add("show");
+    console.log(playersArray);
+    setPlayerInfo(playersArray);
+  });
+  // UICtrl.UIDomElements.playerNames[0].textContent = playerOne;
 
-    // function to add symbols to boxes 
-    let display = function() {
-        boxes.forEach(function(box,index) {
-            box.innerHTML = `<h1> ${logicCtrl.gameArray[index]} </h1>`
-        })
-    };
+  // Function to add symbols to boxes
+  let display = function () {
+    boxes.forEach(function (box, index) {
+      box.innerHTML = ` ${logicCtrl.gameArray[index]} `;
+    });
+  };
 
-return {
+  // Add event listeners to boxes to add symbols to array when clicked
+
+  UICtrl.UIDomElements.boxes.forEach(function (box) {
+    box.addEventListener("click", function (e) {
+      // Check to see if the box already has an element before performing actions
+      if (e.target.textContent.trim().length == 0) {
+        let id = e.target.dataset.key;
+        playersArray[gameState].addSymbol(id);
+        display();
+        if (gameState == 0) {
+          gameState = 1;
+        } else if (gameState == 1) {
+          gameState = 0;
+        }
+      }
+    });
+  });
+
+  // Function to set Usernames to UI
+
+  let setPlayerInfo = function (players) {
+    let playerOne = players[0].playerName;
+    let playerTwo = players[1].playerName;
+    let playerOneScore = players[0].score;
+    let playerTwoScore = players[1].score;
+
+    UICtrl.UIDomElements.playerNames[0].textContent = playerOne;
+    UICtrl.UIDomElements.playerNames[1].textContent = playerTwo;
+    UICtrl.UIDomElements.playerScore[0].textContent = playerOneScore;
+    UICtrl.UIDomElements.playerScore[1].textContent = playerTwoScore;
+  };
+
+  return {
     playersArray,
-    display
-}
-
-})(UIController,logicController);
+    display,
+  };
+})(UIController, logicController);
