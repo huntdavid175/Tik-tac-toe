@@ -43,6 +43,10 @@ body {
   display: flex;
 }
 
+.show-block {
+  display: block;
+}
+
 .card {
   margin-top: 15px;
 }
@@ -66,6 +70,10 @@ body {
       0 0 60px yellow,
       0 0 70px yellow
   } */
+
+.winner-message-row {
+  margin-bottom: 25px;
+}
 
 .box-row {
   width: 80%;

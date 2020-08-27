@@ -9,14 +9,16 @@ let logicController = (function () {
     let five = gameArray[5];
     let six = gameArray[6];
     let seven = gameArray[7];
-    let eight = gameArray[08];
+    let eight = gameArray[8];
 
     let winningCombos = [[zero,one,two],[three,four,five],[six,seven,eight],[zero,three,six],[one,four,seven],[two,five,eight],[zero,four,eight],[two,four,six]];
     let deciderArray = [];
     winningCombos.forEach(function(combo){
         // Check if an array has the same symbols 
        let decider = combo.every(function(item){
-           return item == combo[0]
+           if (combo[0] != ''){
+             return item == combo[0]
+           }
        });
        deciderArray.push(decider)
     })
@@ -45,6 +47,13 @@ let logicController = (function () {
     return winningSymbol
 }
 
+// Function to check if game has ended or is still in progress 
+let gameEnded = function() {
+  let status = gameArray.every(function(item) {
+    return item != ''
+  })
+  return status
+}
     
   let gameArray = ["", "", "", "", "", "", "", "", ""];
 
@@ -68,6 +77,7 @@ let logicController = (function () {
     gameArray,
     Player,
     getWinner,
+    gameEnded,
   };
 })();
 
@@ -83,6 +93,9 @@ let UIController = (function () {
     boxLabel: "box",
     playerNameLabel: "player-name",
     playerScoreLabel: "player-score",
+    winnerDivLabel: "winner-div",
+    winnerMessageLabel: "winner-message-label",
+    playAgainBtnLabel: "play-again"
   };
 
   // Getting html elements
@@ -96,6 +109,9 @@ let UIController = (function () {
     boxes: document.querySelectorAll(`.${domLabels.boxLabel}`),
     playerNames: document.querySelectorAll(`.${domLabels.playerNameLabel}`),
     playerScore: document.querySelectorAll(`.${domLabels.playerScoreLabel}`),
+    winnerDiv: document.querySelector(`#${domLabels.winnerDivLabel}`),
+    winnerMessage: document.querySelector(`#${domLabels.winnerMessageLabel}`),
+    playAgainBtn: document.querySelector(`#${domLabels.playAgainBtnLabel}`)
   };
 
   return {
@@ -191,18 +207,32 @@ let gameController = (function (UICtrl, logicCtrl) {
   };
 
   let declareWinner = function() {
-    let gameWinner = logicCtrl.getWinner()
-    if (gameWinner != undefined) {
+    let gameEnded = logicCtrl.gameEnded();
+    let gameWinner = logicCtrl.getWinner();
+    let winningMessage;
+
+    if (gameEnded && gameWinner == undefined ) {
+      winningMessage = "It's a draw"
+      UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
+      UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
+      console.log(winningMessage)
+    }
+ 
         if (gameWinner == 'x'){
-            console.log(`${playersArray[0].playerName} is the Winner`)
+          winningMessage = `${playersArray[0].playerName} is the Winner`
+          UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
+          UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
+            console.log(winningMessage)
             updateScore(playersArray[0])
         }
         else if (gameWinner == 'o') {
-            console.log(`${playersArray[1].playerName} is the Winner`)
+          winningMessage = `${playersArray[1].playerName} is the Winner`
+          UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
+          UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
+            console.log(winningMessage)
             updateScore(playersArray[1])
         }
       }
-    }
 
 //   function to update score 
 
