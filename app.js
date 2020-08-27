@@ -1,3 +1,4 @@
+// Logic controller 
 let logicController = (function () {
       // function to determine winner 
   let getWinner = function() {
@@ -39,9 +40,9 @@ let logicController = (function () {
     
 
     
-    console.log(deciderArray)
-    console.log(winningCombos)
-    console.log(winningSymbol);
+    // console.log(deciderArray)
+    // console.log(winningCombos)
+    // console.log(winningSymbol);
     
     
     return winningSymbol
@@ -73,14 +74,26 @@ let gameEnded = function() {
     };
   };
 
+
+  // Reset gameArray function 
+
+  function resetGameArray() {
+    gameArray.forEach(function(item, index) {
+      item = '';
+      gameArray[index] = item;
+    })
+  }
+
   return {
     gameArray,
     Player,
     getWinner,
     gameEnded,
+    resetGameArray,
   };
 })();
 
+// UI controller 
 let UIController = (function () {
   // Names of dom element attributes
   const domLabels = {
@@ -114,14 +127,25 @@ let UIController = (function () {
     playAgainBtn: document.querySelector(`#${domLabels.playAgainBtnLabel}`)
   };
 
+  // function to remove classes on playing again 
+
+  function removeClasses() {
+    domElements.boxes.forEach(function(box) {
+      box.classList.remove('blue-color', 'brown-color');
+    })
+  }
+
   return {
     UIDomElements: domElements,
     UIDomLabels: domLabels,
+    removeClasses,
   };
 })();
 
+// Game controller 
 let gameController = (function (UICtrl, logicCtrl) {
-  let gameState = 0;
+  let roundState = 0;
+  let winnerDeclared = false;
   const playersArray = [];
   let boxes = UICtrl.UIDomElements.boxes;
 
@@ -130,10 +154,12 @@ let gameController = (function (UICtrl, logicCtrl) {
     card.addEventListener("click", function () {
       if (card.id == "AI") {
         UICtrl.UIDomElements.firstWrapper.classList.add("no-display");
+        UICtrl.UIDomElements.firstWrapper.classList.remove("show");
         UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
         UICtrl.UIDomElements.gameWrapper.classList.add("show");
       } else if (card.id == "friend") {
         UICtrl.UIDomElements.firstWrapper.classList.add("no-display");
+        UICtrl.UIDomElements.firstWrapper.classList.remove("show");
         UICtrl.UIDomElements.secondWrapper.classList.remove("no-display");
         UICtrl.UIDomElements.secondWrapper.classList.add("show");
       }
@@ -149,13 +175,14 @@ let gameController = (function (UICtrl, logicCtrl) {
         UICtrl.UIDomElements.boxes
       );
       playersArray.push(player);
-      console.log(player);
+      input.value = ''
+      // console.log(player);
     });
     UICtrl.UIDomElements.secondWrapper.classList.remove("show");
     UICtrl.UIDomElements.secondWrapper.classList.add("no-display");
     UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
     UICtrl.UIDomElements.gameWrapper.classList.add("show");
-    console.log(playersArray);
+    // console.log(playersArray);
     setPlayerInfo(playersArray);
   });
   // UICtrl.UIDomElements.playerNames[0].textContent = playerOne;
@@ -180,20 +207,21 @@ let gameController = (function (UICtrl, logicCtrl) {
       // Check to see if the box already has an element before performing actions
       if (e.target.textContent.trim().length == 0) {
         let id = e.target.dataset.key;
-        playersArray[gameState].addSymbol(id);
+        playersArray[roundState].addSymbol(id);
         display();
         declareWinner()
-        if (gameState == 0) {
-          gameState = 1;
-        } else if (gameState == 1) {
-          gameState = 0;
+        if (roundState == 0) {
+          roundState = 1;
+        } else if (roundState == 1) {
+          roundState = 0;
         }
       }
     });
   });
 
-  // Function to set Usernames to UI
 
+
+  // Function to set Usernames to UI
   let setPlayerInfo = function (players) {
     let playerOne = players[0].playerName;
     let playerTwo = players[1].playerName;
@@ -206,6 +234,8 @@ let gameController = (function (UICtrl, logicCtrl) {
     UICtrl.UIDomElements.playerScore[1].textContent = playerTwoScore;
   };
 
+
+  // Function to declare winner 
   let declareWinner = function() {
     let gameEnded = logicCtrl.gameEnded();
     let gameWinner = logicCtrl.getWinner();
@@ -215,35 +245,63 @@ let gameController = (function (UICtrl, logicCtrl) {
       winningMessage = "It's a draw"
       UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
       UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
-      console.log(winningMessage)
+      // console.log(winningMessage)
     }
  
         if (gameWinner == 'x'){
           winningMessage = `${playersArray[0].playerName} is the Winner`
           UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
           UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
-            console.log(winningMessage)
+            // console.log(winningMessage)
             updateScore(playersArray[0])
+            winnerDeclared = true;
         }
         else if (gameWinner == 'o') {
           winningMessage = `${playersArray[1].playerName} is the Winner`
           UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
           UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
-            console.log(winningMessage)
+            // console.log(winningMessage)
             updateScore(playersArray[1])
+            winnerDeclared = true;
         }
       }
 
-//   function to update score 
 
+//   function to update score 
 function updateScore(player) {
 player.score += 1;
 setPlayerInfo(playersArray)
 }
 
+// function to reset score 
+function resetScore() {
+  playersArray[0].score = 0;
+  playersArray[1].score = 0;
+  setPlayerInfo(playersArray)
+}
+
+function playAgain() {
+  roundState = 0
+  UICtrl.UIDomElements.winnerDiv.classList.remove('show-block');
+  logicCtrl.resetGameArray();
+  display();
+  UICtrl.removeClasses()
+}
+
+// function to start a new game 
+function startNewGame(){
+    playAgain();
+    resetScore();
+    UICtrl.UIDomElements.gameWrapper.classList.remove("show");
+    UICtrl.UIDomElements.gameWrapper.classList.add("no-display");
+    UICtrl.UIDomElements.firstWrapper.classList.remove('no-display')
+    UICtrl.UIDomElements.firstWrapper.classList.add('show')
+}
 
   return {
     playersArray,
     display,
+    playAgain,
+    startNewGame
   };
 })(UIController, logicController);
