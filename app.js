@@ -1,63 +1,6 @@
 // Logic controller 
 let logicController = (function () {
-      // function to determine winner 
-  let getWinner = function() {
-    let zero = gameArray[0];
-    let one = gameArray[1];
-    let two = gameArray[2];
-    let three = gameArray[3];
-    let four = gameArray[4];
-    let five = gameArray[5];
-    let six = gameArray[6];
-    let seven = gameArray[7];
-    let eight = gameArray[8];
-
-    let winningCombos = [[zero,one,two],[three,four,five],[six,seven,eight],[zero,three,six],[one,four,seven],[two,five,eight],[zero,four,eight],[two,four,six]];
-    let deciderArray = [];
-    winningCombos.forEach(function(combo){
-        // Check if an array has the same symbols 
-       let decider = combo.every(function(item){
-           if (combo[0] != ''){
-             return item == combo[0]
-           }
-       });
-       deciderArray.push(decider)
-    })
-
-    // Check to see if there is a winner in the array ie. true 
-    let winnerDecider = deciderArray.some(function(item) {
-        return item == true
-    })
-
-    // Get index of the occurence of true 
-    let indexOfWinner = deciderArray.indexOf(true);
-    let winningSymbol;
-
-    // Get Symbol that won 
-    if(winnerDecider){
-        winningSymbol = winningCombos[indexOfWinner][0];
-    }
-    
-
-    
-    // console.log(deciderArray)
-    // console.log(winningCombos)
-    // console.log(winningSymbol);
-    
-    
-    return winningSymbol
-}
-
-// Function to check if game has ended or is still in progress 
-let gameEnded = function() {
-  let status = gameArray.every(function(item) {
-    return item != ''
-  })
-  return status
-}
-    
-  let gameArray = ["", "", "", "", "", "", "", "", ""];
-
+   
   const Player = function (playerName, playerID) {
     let score = 0;
 
@@ -73,6 +16,64 @@ let gameEnded = function() {
       addSymbol,
     };
   };
+
+  let gameArray = ["", "", "", "", "", "", "", "", ""];
+
+      // function to determine winner 
+      let getWinner = function() {
+        let zero = gameArray[0];
+        let one = gameArray[1];
+        let two = gameArray[2];
+        let three = gameArray[3];
+        let four = gameArray[4];
+        let five = gameArray[5];
+        let six = gameArray[6];
+        let seven = gameArray[7];
+        let eight = gameArray[8];
+    
+        let winningCombos = [[zero,one,two],[three,four,five],[six,seven,eight],[zero,three,six],[one,four,seven],[two,five,eight],[zero,four,eight],[two,four,six]];
+        let deciderArray = [];
+        winningCombos.forEach(function(combo){
+            // Check if an array has the same symbols 
+           let decider = combo.every(function(item){
+               if (combo[0] != ''){
+                 return item == combo[0]
+               }
+           });
+           deciderArray.push(decider)
+        })
+    
+        // Check to see if there is a winner in the array ie. true 
+        let winnerDecider = deciderArray.some(function(item) {
+            return item == true
+        })
+    
+        // Get index of the occurence of true 
+        let indexOfWinner = deciderArray.indexOf(true);
+        let winningSymbol;
+    
+        // Get Symbol that won 
+        if(winnerDecider){
+            winningSymbol = winningCombos[indexOfWinner][0];
+        }
+        
+        return winningSymbol
+    }
+
+// function to generate random moves for computer 
+
+let randomMove = function() {
+  let randomNumber = Math.floor(Math.random() * 9)
+  return randomNumber;
+}
+
+  // Function to check if game has ended or is still in progress 
+let gameEnded = function() {
+  let status = gameArray.every(function(item) {
+    return item != ''
+  })
+  return status
+}
 
 
   // Reset gameArray function 
@@ -90,8 +91,11 @@ let gameEnded = function() {
     getWinner,
     gameEnded,
     resetGameArray,
+    randomMove,
   };
 })();
+
+
 
 // UI controller 
 let UIController = (function () {
@@ -100,6 +104,7 @@ let UIController = (function () {
     cardsLabel: "card",
     firstWrapperLabel: "first-wrapper",
     secondWrapperLabel: "second-wrapper",
+    secondWrapperAILabel: "second-wrapper-AI",
     gameWrapperLabel: "game-wrapper",
     inputsLabel: "form-control",
     playBtnLabel: "playBtn",
@@ -116,6 +121,7 @@ let UIController = (function () {
     cards: document.querySelectorAll(`.${domLabels.cardsLabel}`),
     firstWrapper: document.querySelector(`.${domLabels.firstWrapperLabel}`),
     secondWrapper: document.querySelector(`.${domLabels.secondWrapperLabel}`),
+    secondWrapperAI: document.querySelector(`.${domLabels.secondWrapperAILabel}`),
     gameWrapper: document.querySelector(`.${domLabels.gameWrapperLabel}`),
     inputs: document.querySelectorAll(`.${domLabels.inputsLabel}`),
     playBtn: document.querySelector(`#${domLabels.playBtnLabel}`),
@@ -145,6 +151,7 @@ let UIController = (function () {
 // Game controller 
 let gameController = (function (UICtrl, logicCtrl) {
   let roundState = 0;
+  let gameMode;
   let winnerDeclared = false;
   const playersArray = [];
   let boxes = UICtrl.UIDomElements.boxes;
@@ -157,14 +164,31 @@ let gameController = (function (UICtrl, logicCtrl) {
         UICtrl.UIDomElements.firstWrapper.classList.remove("show");
         UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
         UICtrl.UIDomElements.gameWrapper.classList.add("show");
+        gameMode = 'AI'
+        AI()
       } else if (card.id == "friend") {
         UICtrl.UIDomElements.firstWrapper.classList.add("no-display");
         UICtrl.UIDomElements.firstWrapper.classList.remove("show");
         UICtrl.UIDomElements.secondWrapper.classList.remove("no-display");
         UICtrl.UIDomElements.secondWrapper.classList.add("show");
+        gameMode = 'friendly'
       }
     });
   });
+
+
+  function AI() {
+    let player = logicCtrl.Player("Player", 'x')
+    let computer = logicCtrl.Player("Computer", "o")
+
+    playersArray.push(player,computer);
+    setPlayerInfo(playersArray);
+    
+    // if (roundState == 1 && gameMode == "AI") {
+    //   playersArray[1].addSymbol(logicCtrl.randomMove());
+    //   display()
+    // }
+  }
 
   // Play game button functionality
   UICtrl.UIDomElements.playBtn.addEventListener("click", function () {
@@ -176,14 +200,15 @@ let gameController = (function (UICtrl, logicCtrl) {
       );
       playersArray.push(player);
       input.value = ''
-      // console.log(player);
     });
     UICtrl.UIDomElements.secondWrapper.classList.remove("show");
     UICtrl.UIDomElements.secondWrapper.classList.add("no-display");
     UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
     UICtrl.UIDomElements.gameWrapper.classList.add("show");
-    // console.log(playersArray);
+    console.log(playersArray);
     setPlayerInfo(playersArray);
+    console.log(gameMode);
+
   });
   // UICtrl.UIDomElements.playerNames[0].textContent = playerOne;
 
@@ -212,6 +237,15 @@ let gameController = (function (UICtrl, logicCtrl) {
         declareWinner()
         if (roundState == 0) {
           roundState = 1;
+
+          // Computer's move 
+          if(gameMode == 'AI'){
+            playersArray[1].addSymbol(logicCtrl.randomMove());
+          display();
+          roundState = 0
+          }
+          
+          
         } else if (roundState == 1) {
           roundState = 0;
         }
