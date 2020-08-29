@@ -60,11 +60,30 @@ let logicController = (function () {
         return winningSymbol
     }
 
-// function to generate random moves for computer 
-
-let randomMove = function() {
+// function to generate random number for computer 
+let random = function() {
   let randomNumber = Math.floor(Math.random() * 9)
   return randomNumber;
+}
+
+// function to add symbol for computer 
+let insert = function(addSym, checkWinner) {
+  let number = random();
+  let hasEnded = gameEnded()
+
+  if(gameArray[number] == '' && !hasEnded) {
+    console.log("not ended")
+    addSym(number);
+  }
+
+  else if( (gameArray[number] == 'x' || gameArray[number] == 'o') && !hasEnded){
+    console.log("not ended")
+    insert(addSym)
+  }
+  else if(hasEnded) {
+    console.log("gameEnded")
+    return
+  }
 }
 
   // Function to check if game has ended or is still in progress 
@@ -91,7 +110,7 @@ let gameEnded = function() {
     getWinner,
     gameEnded,
     resetGameArray,
-    randomMove,
+    insert,
   };
 })();
 
@@ -153,7 +172,7 @@ let gameController = (function (UICtrl, logicCtrl) {
   let roundState = 0;
   let gameMode;
   let winnerDeclared = false;
-  const playersArray = [];
+  let playersArray = [];
   let boxes = UICtrl.UIDomElements.boxes;
 
   // Adding event listeners to cards to choose game mode and navigate to next step
@@ -183,11 +202,6 @@ let gameController = (function (UICtrl, logicCtrl) {
 
     playersArray.push(player,computer);
     setPlayerInfo(playersArray);
-    
-    // if (roundState == 1 && gameMode == "AI") {
-    //   playersArray[1].addSymbol(logicCtrl.randomMove());
-    //   display()
-    // }
   }
 
   // Play game button functionality
@@ -205,12 +219,8 @@ let gameController = (function (UICtrl, logicCtrl) {
     UICtrl.UIDomElements.secondWrapper.classList.add("no-display");
     UICtrl.UIDomElements.gameWrapper.classList.remove("no-display");
     UICtrl.UIDomElements.gameWrapper.classList.add("show");
-    console.log(playersArray);
     setPlayerInfo(playersArray);
-    console.log(gameMode);
-
   });
-  // UICtrl.UIDomElements.playerNames[0].textContent = playerOne;
 
   // Function to add symbols to boxes
   let display = function () {
@@ -234,14 +244,18 @@ let gameController = (function (UICtrl, logicCtrl) {
         let id = e.target.dataset.key;
         playersArray[roundState].addSymbol(id);
         display();
-        declareWinner()
+        if(gameMode = 'friendly'){
+          declareWinner()
+        }
+
         if (roundState == 0) {
           roundState = 1;
 
           // Computer's move 
           if(gameMode == 'AI'){
-            playersArray[1].addSymbol(logicCtrl.randomMove());
+            logicCtrl.insert(playersArray[1].addSymbol)
           display();
+          declareWinner()
           roundState = 0
           }
           
@@ -279,14 +293,12 @@ let gameController = (function (UICtrl, logicCtrl) {
       winningMessage = "It's a draw"
       UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
       UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
-      // console.log(winningMessage)
     }
  
         if (gameWinner == 'x'){
           winningMessage = `${playersArray[0].playerName} is the Winner`
           UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
           UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
-            // console.log(winningMessage)
             updateScore(playersArray[0])
             winnerDeclared = true;
         }
@@ -294,7 +306,6 @@ let gameController = (function (UICtrl, logicCtrl) {
           winningMessage = `${playersArray[1].playerName} is the Winner`
           UICtrl.UIDomElements.winnerDiv.classList.add('show-block');
           UICtrl.UIDomElements.winnerMessage.textContent = winningMessage
-            // console.log(winningMessage)
             updateScore(playersArray[1])
             winnerDeclared = true;
         }
@@ -329,7 +340,9 @@ function startNewGame(){
     UICtrl.UIDomElements.gameWrapper.classList.remove("show");
     UICtrl.UIDomElements.gameWrapper.classList.add("no-display");
     UICtrl.UIDomElements.firstWrapper.classList.remove('no-display')
-    UICtrl.UIDomElements.firstWrapper.classList.add('show')
+    UICtrl.UIDomElements.firstWrapper.classList.add('show');
+    gameMode = undefined;
+    playersArray = []
 }
 
   return {
